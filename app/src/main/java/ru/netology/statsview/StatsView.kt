@@ -32,10 +32,10 @@ class StatsView @JvmOverloads constructor(
             textSize = getDimension(R.styleable.StatsView_textSize, textSize)
             lineWidth = getDimension(R.styleable.StatsView_lineWidth, lineWidth.toFloat()).toInt()
             colors = listOf(
-            getColor(R.styleable.StatsView_color1,generateRandomColor()),
-            getColor(R.styleable.StatsView_color2,generateRandomColor()),
-            getColor(R.styleable.StatsView_color3,generateRandomColor()),
-            getColor(R.styleable.StatsView_color4,generateRandomColor())
+                getColor(R.styleable.StatsView_color1,generateRandomColor()),
+                getColor(R.styleable.StatsView_color2,generateRandomColor()),
+                getColor(R.styleable.StatsView_color3,generateRandomColor()),
+                getColor(R.styleable.StatsView_color4,generateRandomColor())
             )
         }
     }
@@ -66,13 +66,12 @@ class StatsView @JvmOverloads constructor(
         strokeJoin = Paint.Join.ROUND
         strokeCap = Paint.Cap.ROUND
     }
-        private val textPaint = Paint(
-            Paint.ANTI_ALIAS_FLAG
-        ).apply {
-            textSize = this@StatsView.textSize
-            style = Paint.Style.FILL
-            textAlign = Paint.Align.CENTER
-
+    private val textPaint = Paint(
+        Paint.ANTI_ALIAS_FLAG
+    ).apply {
+        textSize = this@StatsView.textSize
+        style = Paint.Style.FILL
+        textAlign = Paint.Align.CENTER
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -90,7 +89,6 @@ class StatsView @JvmOverloads constructor(
         if (data.isEmpty()) {
             return
         }
-
         val counted = countedData
 
         var startAngle = -90F
@@ -99,7 +97,14 @@ class StatsView @JvmOverloads constructor(
             paint.color = colors.getOrElse(index) {generateRandomColor()}
             canvas.drawArc(oval, startAngle, angle, false, paint)
             startAngle += angle
+        }
 
+        startAngle = -90F
+        counted.forEachIndexed { index, datum ->
+            val angle = datum * 360F
+            paint.color = colors.getOrElse(index) {generateRandomColor()}
+            canvas.drawArc(oval, startAngle, Float.MIN_VALUE, false, paint)
+            startAngle += angle
         }
 
         canvas.drawText(
